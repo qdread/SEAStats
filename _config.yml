@@ -1,7 +1,6 @@
 # Setup
 title:               SEAStats
-url:                 https://qdread.github.io
-baseurl:             /SEAstats
+url:                 https://qdread.github.io/SEAstats
 
 # About/contact
 author:
