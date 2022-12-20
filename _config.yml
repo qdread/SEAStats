@@ -11,7 +11,7 @@ author:
 
 # Build settings
 markdown:            kramdown
-theme:               midnight
+theme:               jekyll-theme-midnight
 
 github:
   repo:              https://github.com/qdread/SEAStats
