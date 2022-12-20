@@ -9,9 +9,10 @@ author:
   url:               https://quentinread.com
   email:             quentin.read@usda.gov
 
-# Build settings
 markdown:            kramdown
-theme:               jekyll-theme-midnight
+remote_theme:        pages-themes/midnight@v0.2.0
+plugins:
+- jekyll-remote-theme
 
 github:
   repo:              https://github.com/qdread/SEAStats
