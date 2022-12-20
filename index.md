@@ -1,6 +1,6 @@
 ---
-title: SEAStats
 layout: default
+title: SEAStats
 ---
 
 This is a master list of learning materials for USDA ARS SEA stats and data science trainings, past present and future, brought to you by SEA area statistician [Quentin Read](https://quentinread.com). Better website layout coming soon!
