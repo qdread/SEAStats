@@ -1,0 +1,17 @@
+# Setup
+title:               SEAStats
+url:                 https://qdread.github.io
+baseurl:             /SEAstats
+
+# About/contact
+author:
+  name:              Quentin Read
+  url:               https://quentinread.com
+  email:             quentin.read@usda.gov
+
+# Build settings
+markdown:            kramdown
+theme:               midnight
+
+github:
+  repo:              https://github.com/qdread/SEAStats
