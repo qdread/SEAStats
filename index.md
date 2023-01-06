@@ -3,17 +3,37 @@ layout: default
 title: SEAStats
 ---
 
-This is a master list of learning materials for USDA ARS SEA stats and data science trainings, past present and future, brought to you by SEA area statistician [Quentin Read](https://quentinread.com). Better website layout coming soon!
+This is a master list of learning materials for USDA ARS SEA stats and data science trainings, past present and future, brought to you by SEA area statistician [Quentin Read](https://quentinread.com). 
 
-## Learning materials from previously offered training courses
+## A practical toolkit for mixed models in R
 
-- [A practical toolkit for mixed models in R](https://quentinread.com/glmm-workshop-dec2022): Two-day workshop on basic R programming and fitting simple linear mixed models in R. *Held December 8-9, 2022.*
-  + [USDA Axon intranet page including lecture videos from the workshop](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) (only accessible by USDA personnel)
+Two-day workshop on basic R programming and fitting simple linear mixed models in R. *Workshop held in Raleigh, NC, December 8-9, 2022.*
 
-## Courses under development
+- [Main course page](https://quentinread.com/glmm-workshop-dec2022)
+- [USDA Axon intranet page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) including recordings of sessions from the December 2022 workshop. *(only accessible by USDA personnel)*
 
-The below links are to GitHub repositories for unfinished courses. Check back again soon!
+## Data visualization basics with R and ggplot2
 
-- [Data visualization basics with R and ggplot2](https://github.com/qdread/data-viz-basics): One-hour session introducing students to visualizing data with R and ggplot2. 
-- [R for SAS users](https://github.com/qdread/R-for-SAS-users): Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.
-- [Crash course in Bayesian mixed models with brms](https://github.com/qdread/brms-crash-course): Two-hour session introducing students to how Bayesian models work in general, and how to fit some simple ones with brms.
+One-hour session introducing students to visualizing data with R and [ggplot2](). 
+
+- [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }})
+- [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }})
+- [Worksheet (.R script)]({{ 'data_viz_basics/data_viz_basics_worksheet.R' | relative_url }})
+
+## Crash course in Bayesian mixed models with brms
+
+Two-hour session introducing students to Bayesian models work in general, and showing how to fit some simple Bayesian mixed models with [brms]().
+
+*This course is still under development. Check back soon!*
+
+- [GitHub repository for course materials](https://github.com/qdread/brms-crash-course)
+
+## R for SAS Users
+
+Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.
+
+*This course is still under development. Check back soon!*
+
+- [GitHub repository for course materials](https://github.com/qdread/R-for-SAS-users): Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.
+
+*This page last updated by QDR on 2023-01-06.
