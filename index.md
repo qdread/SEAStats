@@ -12,7 +12,7 @@ This is a master list of learning materials for USDA ARS SEA stats and data scie
 
 ## Courses under development
 
-Check back again soon!  
+The below links are to GitHub repositories for unfinished courses. Check back again soon!
 
 - [Data visualization basics with R and ggplot2](https://github.com/qdread/data-viz-basics): One-hour session introducing students to visualizing data with R and ggplot2. 
 - [R for SAS users](https://github.com/qdread/R-for-SAS-users): Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.
