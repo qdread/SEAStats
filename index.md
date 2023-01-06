@@ -3,11 +3,11 @@ layout: default
 title: SEAStats
 ---
 
-This is a master list of learning materials for USDA ARS SEA stats and data science trainings, past present and future, brought to you by SEA area statistician [Quentin Read](https://quentinread.com). 
-
-![]({{ 'logos/logo_glmm.png' | relative_url }})
+This page hosts learning materials for USDA ARS SEA statistics and data science trainings created by SEA area statistician [Quentin Read](https://quentinread.com). 
 
 -----
+
+![]({{ 'logos/logo_glmm.png' | relative_url }})
 
 ### A practical toolkit for mixed models in R
 
@@ -15,7 +15,7 @@ Two-day workshop on basic R programming and fitting simple linear mixed models i
 *Workshop held in Raleigh, NC, December 8-9, 2022.*
 
 - [Main course page](https://quentinread.com/glmm-workshop-dec2022) including links to text version of lesson, slides, worksheets, and example datasets
-- [USDA Axon intranet page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) including recordings of sessions from the December 2022 workshop. *(only accessible by USDA personnel)*
+- [USDA Axon intranet page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) including recordings of sessions from the December 2022 workshop *(only accessible by USDA personnel)*
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/glmm-workshop-dec2022)
 
@@ -43,6 +43,10 @@ Two-hour session introducing students to Bayesian models work in general, and sh
 
 *This course is still under development. Check back soon!*
 
+- [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }})
+- [Slides version of lesson]({{ 'brms_crash_course/brms_crash_course_slides' | relative_url }})
+- [Worksheet (.R script)]({{ 'brms_crash_course/brms_crash_course_worksheet.R' | relative_url }})
+
 - [GitHub repository with source code of course materials](https://github.com/qdread/brms-crash-course)
 
 -----
@@ -55,6 +59,12 @@ Two-hour session showing basic data processing and model fitting procedures in R
 
 *This course is still under development. Check back soon!*
 
+- [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }})
+- [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }})
+- [Worksheet (.txt file containing R and SAS code)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.txt' | relative_url }})
+
 - [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users)
+
+-----
 
 *This page last updated by QDR on 2023-01-06.*
