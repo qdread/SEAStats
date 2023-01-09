@@ -1043,12 +1043,12 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>fit_randomslopes <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> texp <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> extrav <span class="sc">+</span> sex <span class="sc">|</span> class),  </span>
-<span id="cb29-2"><a href="#cb29-2"></a>                   <span class="at">data =</span> popular2data, </span>
-<span id="cb29-3"><a href="#cb29-3"></a>                   <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb29-4"><a href="#cb29-4"></a>                     <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
-<span id="cb29-5"><a href="#cb29-5"></a>                   ),</span>
-<span id="cb29-6"><a href="#cb29-6"></a>                   <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb29-7"><a href="#cb29-7"></a>                   <span class="at">seed =</span> <span class="dv">709</span>, <span class="at">file =</span> <span class="st">'fit_randomslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-2"><a href="#cb29-2"></a>                        <span class="at">data =</span> popular2data, </span>
+<span id="cb29-3"><a href="#cb29-3"></a>                        <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb29-4"><a href="#cb29-4"></a>                          <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
+<span id="cb29-5"><a href="#cb29-5"></a>                        ),</span>
+<span id="cb29-6"><a href="#cb29-6"></a>                        <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>                        <span class="at">seed =</span> <span class="dv">709</span>, <span class="at">file =</span> <span class="st">'fit_randomslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
 <p>Note: this model may take a minute or two to sample</p>
