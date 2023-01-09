@@ -39,7 +39,7 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 
 ### Crash course in Bayesian mixed models with brms
 
-Two-hour session introducing students to Bayesian models work in general, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).
+Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).
 
 *This course is still under development. Check back soon!*
 
