@@ -1,6 +1,9 @@
 # Setup
 title:               SEAStats
+description:         Stats and data science learning resources for researchers in the USDA ARS Southeast Area
 url:                 https://qdread.github.io/SEAstats
+color-scheme:        dark
+favicon:             true
 
 # About/contact
 author:
@@ -8,9 +11,25 @@ author:
   url:               https://quentinread.com
   email:             quentin.read@usda.gov
 
-remote_theme:        pages-themes/midnight@v0.2.0
+remote_theme:        vaibhavvikas/jekyll-theme-minimalistic
 plugins:
-- jekyll-remote-theme
+  - jekyll-remote-theme
 
 github:
   repo:              https://github.com/qdread/SEAStats
+  
+navigation:
+  - name: R Boot Camp
+    link: ./#rbootcamp
+  - name: Mixed Models in R
+    link: ./#mixedmodelsinr
+  - name: ggplot2 Basics
+    link: ./#ggplot2basics
+  - name: Bayesian Mixed Models with brms
+    link: ./#bayesianmixedmodels
+  - name: R for SAS Users
+    link: ./#rforsas
+  - name: Archived course pages
+    link: ./#archived-course-and-workshop-pages
+    
+    
