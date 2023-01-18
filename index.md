@@ -3,29 +3,61 @@ layout: default
 title: SEAStats
 ---
 
+## SEAStats
+
 This page hosts learning materials for USDA ARS SEA statistics and data science trainings created by SEA area statistician [Quentin Read](https://quentinread.com). 
+
+**For USDA personnel only**: to access video recordings of previous training sessions, please visit the [SEA Statistics Training page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) on USDA Axon intranet.
 
 -----
 
-![]({{ 'logos/logo_glmm.png' | relative_url }})
+<div id="rbootcamp"></div>
+![]({{ 'images/logo_rbootcamp.png' | relative_url }})
 
-### A practical toolkit for mixed models in R
+### R Boot Camp
 
-Two-day workshop on basic R programming and fitting simple linear mixed models in R.  
-*Workshop held in Raleigh, NC, December 8-9, 2022.*
+Two one-hour lessons on basic R programming for complete beginners (Lessons 1 and 2 in a six-lesson series).  
+*Taught in hybrid format in Raleigh, NC, December 8-9, 2022.*
 
-- [Main course page](https://quentinread.com/glmm-workshop-dec2022) including links to text version of lesson, slides, worksheets, and example datasets
-- [USDA Axon intranet page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) including recordings of sessions from the December 2022 workshop *(only accessible by USDA personnel)*
+Full-text version                                                      | Slides                                          | Worksheets
+---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------
+[**Lesson 1**: R Boot Camp: the very basics](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson1)          | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson1) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson1_worksheet.R)
+[**Lesson 2**: R Boot Camp: working with data frames](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson2) | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson2) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson2_worksheet.R)
 
+- [Zip file including all worksheets for lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/worksheets.zip)
+- [Zip file including all example datasets for Lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/datasets.zip)
 - [GitHub repository with source code of course materials](https://github.com/qdread/glmm-workshop-dec2022)
 
 -----
 
-![]({{ 'logos/logo_ggplot.png' | relative_url }})
+<div id="mixedmodelsinr"></div>
+![]({{ 'images/logo_glmm.png' | relative_url }})
+
+### A practical toolkit for mixed models in R
+
+Four one-hour lessons on fitting simple linear mixed models in R (Lessons 3 and 4 in a six-lesson series).  
+*Taught in hybrid format in Raleigh, NC, December 8-9, 2022.*
+
+Full-text version                                                         | Slides                                          | Worksheets
+------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------
+[**Lesson 3**: From linear model to linear mixed model](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson3)          | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson3) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson3_worksheet.R)
+[**Lesson 4**: Going further with mixed models](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson4)          | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson4) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson4_worksheet.R)
+[**Lesson 5**: Generalized linear mixed models](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson5)          | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson5) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson5_worksheet.R)
+[**Lesson 6**: Estimating and comparing treatment means](https://qdread.github.io/glmm-workshop-dec2022/lessons/lesson6)          | [Slides](https://qdread.github.io/glmm-workshop-dec2022/slides/lesson6) | [Worksheet](https://github.com/qdread/glmm-workshop-dec2022/raw/main/worksheet_files/lesson6_worksheet.R)
+
+- [Zip file including all worksheets for lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/worksheets.zip)
+- [Zip file including all example datasets for Lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/datasets.zip)
+- [GitHub repository with source code of course materials](https://github.com/qdread/glmm-workshop-dec2022)
+
+-----
+
+<div id="ggplot2basics"></div>
+![]({{ 'images/logo_ggplot.png' | relative_url }})
 
 ### Data visualization basics with R and ggplot2
 
-One-hour session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/). 
+One-hour session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/).  
+*Taught in-person in Fayetteville, AR, January 10, 2023.*
 
 - [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }})
 - [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }})
@@ -35,11 +67,13 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 
 -----
 
-![]({{ 'logos/logo_brms.png' | relative_url }})
+<div id="bayesianmixedmodels"></div>
+![]({{ 'images/logo_brms.png' | relative_url }})
 
-### Crash course in Bayesian mixed models with brms
+### A crash course in Bayesian mixed models with brms
 
-Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).
+Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).  
+*Taught in-person in Fayetteville, AR, January 10, 2023.*
 
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }})
 - [Slides version of lesson]({{ 'brms_crash_course/brms_crash_course_slides' | relative_url }})
@@ -49,12 +83,12 @@ Two-hour session introducing students to Bayesian inference, and showing how to 
 
 -----
 
-![]({{ 'logos/logo_rsas.png' | relative_url }})
+<div id="rforsas"></div>
+![]({{ 'images/logo_rsas.png' | relative_url }})
 
 ### R for SAS Users
 
-Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.
-
+Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.  
 *This course is still under development. Check back soon!*
 
 - [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }})
@@ -65,4 +99,8 @@ Two-hour session showing basic data processing and model fitting procedures in R
 
 -----
 
-*This page last updated by QDR on 2023-01-06.*
+## Archived course and workshop pages
+
+- [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022) including links to text version of lesson, slides, worksheets, and example datasets
+
+*This page last updated by QDR on 2023-01-18.*
