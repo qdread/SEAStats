@@ -75,6 +75,7 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).  
 *Taught in-person in Fayetteville, AR, January 10, 2023.*
 
+- [Instructions for installing and configuring brms]({{ 'brms_crash_course/simple_brms_install_instructions' | relative_url }}){:target="_blank"} (do this before starting the course)
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'brms_crash_course/brms_crash_course_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'brms_crash_course/brms_crash_course_worksheet.R' | relative_url }}){:target="_blank"}
@@ -95,12 +96,18 @@ Two-hour session showing basic data processing and model fitting procedures in R
 - [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.txt file containing R and SAS code)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.txt' | relative_url }}){:target="_blank"}
 
-- [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users)
+- [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users){:target="_blank"}
+
+-----
+
+## Other learning resources
+
+I compiled a [list of my favorite learning resources](https://qdread.github.io/glmm-workshop-dec2022/pre-workshop-materials){:target="_blank"}, including materials on R programming and mixed models, for a recent stats workshop. I expect to add more material to this list in the future; please check back soon for updates! 
 
 -----
 
 ## Archived course and workshop pages
 
-- [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022) including links to text version of lesson, slides, worksheets, and example datasets
+- [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-01-18.*
+*This page last updated by QDR on 2023-01-19. This site's contents were created by the author and do not reflect official USDA policy.*
