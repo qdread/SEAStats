@@ -1,6 +1,9 @@
 ---
 layout: default
 title: SEAStats
+redirect_from:
+  - seastats/
+  - SEAstats/
 ---
 
 ## SEAStats
@@ -17,7 +20,7 @@ This page hosts learning materials for USDA ARS SEA statistics and data science 
 ### R Boot Camp
 
 Two one-hour lessons on basic R programming for complete beginners (Lessons 1 and 2 in a six-lesson series).  
-*Taught in hybrid format in Raleigh, NC, December 8-9, 2022.*
+*Taught in hybrid format in Raleigh, NC, December 8-9, 2022, and in person in Fayetteville, AR, January 9, 2023, and Booneville, AR, January 12, 2023.*
 
 Full-text version                                                      | Slides                                          | Worksheets
 ---------------------------------------------------------------------- | ----------------------------------------------- | ------------------------
@@ -35,7 +38,7 @@ Full-text version                                                      | Slides 
 
 ### A practical toolkit for mixed models in R
 
-Four one-hour lessons on fitting simple linear mixed models in R (Lessons 3 and 4 in a six-lesson series).  
+Four one-hour lessons on fitting simple linear mixed models in R (Lessons 3-6 in a six-lesson series).  
 *Taught in hybrid format in Raleigh, NC, December 8-9, 2022.*
 
 Full-text version                                                         | Slides                                          | Worksheets
@@ -57,7 +60,7 @@ Full-text version                                                         | Slid
 ### Data visualization basics with R and ggplot2
 
 One-hour session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/).  
-*Taught in-person in Fayetteville, AR, January 10, 2023.*
+*Taught in Fayetteville, AR, January 10, 2023.*
 
 - [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }}){:target="_blank"}
@@ -73,7 +76,7 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 ### A crash course in Bayesian mixed models with brms
 
 Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).  
-*Taught in-person in Fayetteville, AR, January 10, 2023.*
+*Taught in Fayetteville, AR, January 10, 2023.*
 
 - [Instructions for installing and configuring brms]({{ 'brms_crash_course/simple_brms_install_instructions' | relative_url }}){:target="_blank"} (do this before starting the course)
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }}){:target="_blank"}
@@ -110,4 +113,4 @@ I compiled a [list of my favorite learning resources](https://qdread.github.io/g
 
 - [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-01-19. This site's contents were created by the author and do not reflect official USDA policy.*
+*This page last updated by QDR on 2023-01-19. This page's contents were created by the author and do not reflect official USDA policy.*
