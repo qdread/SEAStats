@@ -93,11 +93,12 @@ Two-hour session introducing students to Bayesian inference, and showing how to 
 ### R for SAS Users
 
 Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.  
-*This course is still under development. Check back soon!*
+*Will be taught in Athens, GA, February 2023.*
 
 - [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }}){:target="_blank"}
-- [Worksheet (.txt file containing R and SAS code)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.txt' | relative_url }}){:target="_blank"}
+- [Worksheet (.R script)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.R' | relative_url }}){:target="_blank"}
+- [.sas file with all SAS code from the lesson]({{ 'R_for_SAS_users/R_for_SAS_users_SAScode.sas' | relative_url }}){:target="_blank"}
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users){:target="_blank"}
 
@@ -113,4 +114,4 @@ I compiled a [list of my favorite learning resources](https://qdread.github.io/g
 
 - [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-01-19. This page's contents were created by the author and do not reflect official USDA policy.*
+*This page last updated by QDR on 2023-01-31. This page's contents were created by the author and do not reflect official USDA policy.*
