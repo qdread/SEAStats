@@ -12,6 +12,12 @@ This page hosts learning materials for USDA ARS SEA statistics and data science 
 
 **For USDA personnel only**: to access video recordings of previous training sessions, please visit the [SEA Statistics Training page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) on USDA Axon intranet.
 
+### R Installation instructions
+
+[Instructions for installing R, RStudio, and R packages]({{ 'installingr' | relative_url }}){:target="_blank"}
+
+Follow these instructions before starting any of the lessons if you do not have R and RStudio installed on your laptop.
+
 -----
 
 <div id="rbootcamp"></div>
@@ -29,6 +35,7 @@ Full-text version                                                      | Slides 
 
 - [Zip file including all worksheets for lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/worksheets.zip)
 - [Zip file including all example datasets for Lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/datasets.zip)
+
 - [GitHub repository with source code of course materials](https://github.com/qdread/glmm-workshop-dec2022)
 
 -----
@@ -50,6 +57,7 @@ Full-text version                                                         | Slid
 
 - [Zip file including all worksheets for lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/worksheets.zip)
 - [Zip file including all example datasets for Lessons 1-6](https://qdread.github.io/glmm-workshop-dec2022/public/datasets.zip)
+
 - [GitHub repository with source code of course materials](https://github.com/qdread/glmm-workshop-dec2022){:target="_blank"}
 
 -----
