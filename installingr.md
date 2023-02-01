@@ -78,4 +78,4 @@ It should look like this (with a few more package names listed):
 
 #### Step 4. Download the worksheets and example datasets
 
-Go back to the [main page](/index.html) and download the .zip files containing the example datasets and worksheets needed for the lessons. Unzip them to a directory on your local file system. You will need to specify the file path to that directory when you load the example datasets during the workshop.
+Go back to the [main page](/SEAStats/index.html) and download the .zip files containing the example datasets and worksheets needed for the lessons. Unzip them to a directory on your local file system. You will need to specify the file path to that directory when you load the example datasets during the workshop.

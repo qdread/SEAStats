@@ -14,7 +14,7 @@ This page hosts learning materials for USDA ARS SEA statistics and data science 
 
 ### R Installation instructions
 
-[Instructions for installing R, RStudio, and R packages]({{ 'installingr' | relative_url }}){:target="_blank"}
+[Instructions for installing R, RStudio, and R packages]({{ 'installingr' | relative_url }})
 
 Follow these instructions before starting any of the lessons if you do not have R and RStudio installed on your laptop.
 
@@ -86,7 +86,7 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).  
 *Taught in Fayetteville, AR, January 10, 2023.*
 
-- [Instructions for installing and configuring brms]({{ 'brms_crash_course/simple_brms_install_instructions' | relative_url }}){:target="_blank"} (do this before starting the course)
+- [Instructions for installing and configuring brms]({{ 'brms_crash_course/simple_brms_install_instructions' | relative_url }}) (do this before starting the course)
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'brms_crash_course/brms_crash_course_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'brms_crash_course/brms_crash_course_worksheet.R' | relative_url }}){:target="_blank"}
