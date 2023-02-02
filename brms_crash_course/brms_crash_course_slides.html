@@ -449,7 +449,7 @@
 <section id="what-is-bayesian-inference" class="slide level2">
 <h2>What is Bayesian inference?</h2>
 
-<img data-src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Thomas_Bayes.gif" class="r-stretch"></section>
+<img data-src="https://qdread.github.io/SEAStats/images/Thomas_Bayes.png" class="r-stretch"></section>
 <section id="what-is-bayesian-inference-1" class="slide level2">
 <h2>What is Bayesian inference?</h2>
 <p>A method of statistical inference that allows you to use information you already know to assign a prior probability to a hypothesis, then update the probability of that hypothesis as you get more information</p>
@@ -600,7 +600,8 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(emmeans)</span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(easystats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(logspline)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -616,126 +617,93 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 </section>
 <section id="the-data" class="slide level2">
 <h2>The data</h2>
-<p>Read the simulated popularity dataset from CSV on GitHub</p>
+<p>Read the simulated yield dataset from CSV on GitHub</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>popular2data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://github.com/qdread/brms-crash-course/raw/main/data/popular2data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>yield_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://github.com/qdread/brms-crash-course/raw/main/data/yield_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <h3 id="examine-the-data">Examine the data</h3>
 <ul>
-<li><code>pupil</code>: numeric ID for each individual, nested within each class (between 16 and 26 pupils per class)</li>
-<li><code>class</code>: numeric ID for each classroom (1-100)</li>
-<li><code>extrav</code>: numerical score for extraversion (1-10)</li>
-<li><code>sex</code>: binary variable (0 = boy, 1 = girl)</li>
-<li><code>texp</code>: numerical score for teacher experience level (2-25). Same for all pupils in the same classroom</li>
-<li><code>popular</code>: continuous score (0-10) of the popularity of each individual student (outcome variable)</li>
+<li><code>field</code>: text ID for each field where responses were measured (<code>'field1'</code> through <code>'field25'</code>)</li>
+<li><code>plot</code>: text ID for each plot, 40 plots in each field (<code>'plot1'</code> through <code>'plot40'</code>)</li>
+<li><code>variety</code>: text ID identifying variety (<code>'short'</code> and <code>'tall'</code>)</li>
+<li><code>rainfall</code>: numeric variable. Same for all plots in a given field</li>
+<li><code>soilN</code>: numeric variable (soil nitrogen). Unique value for each plot</li>
+<li><code>yield</code>: numeric variable measured at plot level (outcome variable)</li>
 </ul>
-</section>
-<section class="slide level2">
-
-<p>Convert <code>sex</code> to a labeled factor</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>popular2data <span class="ot">&lt;-</span> <span class="fu">mutate</span>(popular2data, <span class="at">sex =</span> <span class="fu">factor</span>(sex, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'boy'</span>, <span class="st">'girl'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="exploratory-plots" class="slide level2">
 <h2>Exploratory plots</h2>
 <ul>
-<li>Look at relationship between popularity <code>popular</code> and extraversion <code>extrav</code></li>
+<li>Look at relationship between <code>yield</code> and <code>soilN</code></li>
 <li>I will not explain <strong>ggplot2</strong> code for now</li>
-<li>Extraversion values are jittered in x direction</li>
+<li>Soil N values are jittered in <em>x</em> direction</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>(pop_vs_ext <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> popular2data, <span class="fu">aes</span>(<span class="at">x =</span> extrav, <span class="at">y =</span> popular)) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.2</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>             <span class="at">alpha =</span> .<span class="dv">8</span>,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">ggtitle</span>(<span class="st">'Popularity vs. extraversion'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>(yield_vs_N <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> yield_data, <span class="fu">aes</span>(<span class="at">x =</span> soilN, <span class="at">y =</span> yield)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.2</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>             <span class="at">alpha =</span> .<span class="dv">8</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">ggtitle</span>(<span class="st">'Yield vs. soil N'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Add trendline.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>pop_vs_ext <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">ggtitle</span>(<span class="st">'Popularity vs. extraversion'</span>, <span class="at">subtitle =</span> <span class="st">'overall trendline'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>yield_vs_N <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">ggtitle</span>(<span class="st">'Yield vs. soil N'</span>, <span class="at">subtitle =</span> <span class="st">'overall trendline'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
-<p>Take multilevel structure of data into account (color by class).</p>
+<p>Take multilevel structure of data into account (color by field).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>(pop_vs_ext_colored <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> popular2data, <span class="fu">aes</span>(<span class="at">x =</span> extrav, <span class="at">y =</span> popular, <span class="at">color =</span> class, <span class="at">group =</span> class)) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>   <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.2</span>,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>              <span class="at">alpha =</span> .<span class="dv">8</span>,</span>
-<span id="cb8-4"><a href="#cb8-4"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>   <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'none'</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>   <span class="fu">scale_color_distiller</span>(<span class="at">palette =</span> <span class="st">'Set1'</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>   <span class="fu">ggtitle</span>(<span class="st">'Popularity vs. extraversion'</span>, <span class="st">'points colored by class'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>(yield_vs_N_colored <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> yield_data, <span class="fu">aes</span>(<span class="at">x =</span> soilN, <span class="at">y =</span> yield, <span class="at">color =</span> field, <span class="at">group =</span> field)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>   <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.2</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>              <span class="at">alpha =</span> .<span class="dv">8</span>,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>   <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'none'</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>   <span class="fu">ggtitle</span>(<span class="st">'Yield vs. soil N'</span>, <span class="st">'points colored by field'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
-<p>Add class-level trendlines.</p>
+<p>Add field-level trendlines.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>pop_vs_ext_colored <span class="sc">+</span> </span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">ggtitle</span>(<span class="st">'Popularity vs. extraversion'</span>, <span class="st">'trendline by class'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section class="slide level2">
-
-<p>Highlight classes with most extreme trends.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>popular2data <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">group_by</span>(class) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> <span class="fu">lm</span>(popular <span class="sc">~</span> extrav)<span class="sc">$</span>coefficients[<span class="dv">2</span>]) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>  ungroup <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">mutate</span>(<span class="at">high_or_low =</span> <span class="fu">case_when</span>(</span>
-<span id="cb10-6"><a href="#cb10-6"></a>    slope <span class="sc">&gt;=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(slope))[<span class="dv">98</span>] <span class="sc">~</span> <span class="st">'high'</span>,</span>
-<span id="cb10-7"><a href="#cb10-7"></a>    slope <span class="sc">&lt;=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(slope))[<span class="dv">3</span>] <span class="sc">~</span> <span class="st">'low'</span>,</span>
-<span id="cb10-8"><a href="#cb10-8"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">'mid'</span></span>
-<span id="cb10-9"><a href="#cb10-9"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> extrav, <span class="at">y =</span> popular, <span class="at">group =</span> class)) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.2</span>,</span>
-<span id="cb10-12"><a href="#cb10-12"></a>              <span class="at">alpha =</span> .<span class="dv">8</span>,</span>
-<span id="cb10-13"><a href="#cb10-13"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">2</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> high_or_low, <span class="at">size =</span> high_or_low), </span>
-<span id="cb10-15"><a href="#cb10-15"></a>              <span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb10-16"><a href="#cb10-16"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'none'</span>) <span class="sc">+</span></span>
-<span id="cb10-17"><a href="#cb10-17"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">high =</span> <span class="st">'blue'</span>, <span class="at">low =</span> <span class="st">'red'</span>, <span class="at">mid =</span> <span class="st">'gray50'</span>)) <span class="sc">+</span></span>
-<span id="cb10-18"><a href="#cb10-18"></a>  <span class="fu">scale_size_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">high =</span> <span class="fl">1.2</span>, <span class="at">low =</span> <span class="fl">1.2</span>, <span class="at">mid =</span> <span class="fl">0.6</span>)) <span class="sc">+</span></span>
-<span id="cb10-19"><a href="#cb10-19"></a>  <span class="fu">ggtitle</span>(<span class="st">'Popularity vs. extraversion'</span>, <span class="st">'highlighting 6 classes with most extreme relationship'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>yield_vs_N_colored <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">ggtitle</span>(<span class="st">'Yield vs. soil N'</span>, <span class="st">'trendline by field'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fitting-models" class="slide level2 smaller">
 <h2>Fitting models</h2>
 <p>For reference this is mixed model syntax from <strong>lme4</strong> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">lmer</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> class), <span class="at">data =</span> popular2data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">lmer</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> field), <span class="at">data =</span> yield_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Dependent or response variable (<code>popular</code>) on left side</li>
+<li>Dependent or response variable (<code>yield</code>) on left side</li>
 <li>Tilde <code>~</code> separates dependent from independent variables</li>
 <li>Here the only fixed effect is the global intercept (<code>1</code>)</li>
-<li>Random effects specification (<code>(1 | class)</code>) has a <em>design</em> side (on the left hand) and <em>group</em> side (on the right hand) separated by <code>|</code>.</li>
+<li>Random effects specification (<code>(1 | field)</code>) has a <em>design</em> side (on the left hand) and <em>group</em> side (on the right hand) separated by <code>|</code>.</li>
 <li>In this case, the <code>1</code> on the design side means only fit random intercepts and no random slopes</li>
-<li><code>class</code> on the group side means each class will get its own random intercept</li>
+<li><code>field</code> on the group side means each field will get its own random intercept</li>
 </ul>
 </section>
 <section class="slide level2">
 
 <h3 id="our-first-bayesian-multilevel-model">Our first Bayesian multilevel model!</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>fit_interceptonly <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> class),</span>
-<span id="cb12-2"><a href="#cb12-2"></a>                         <span class="at">data =</span> popular2data,</span>
-<span id="cb12-3"><a href="#cb12-3"></a>                         <span class="at">chains =</span> <span class="dv">2</span>,</span>
-<span id="cb12-4"><a href="#cb12-4"></a>                         <span class="at">iter =</span> <span class="dv">200</span>,</span>
-<span id="cb12-5"><a href="#cb12-5"></a>                         <span class="at">warmup =</span> <span class="dv">100</span>,</span>
-<span id="cb12-6"><a href="#cb12-6"></a>                         <span class="at">init =</span> <span class="st">'random'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>fit_interceptonly <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> field),</span>
+<span id="cb10-2"><a href="#cb10-2"></a>                         <span class="at">data =</span> yield_data,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>                         <span class="at">chains =</span> <span class="dv">2</span>,</span>
+<span id="cb10-4"><a href="#cb10-4"></a>                         <span class="at">iter =</span> <span class="dv">200</span>,</span>
+<span id="cb10-5"><a href="#cb10-5"></a>                         <span class="at">warmup =</span> <span class="dv">100</span>,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>                         <span class="at">init =</span> <span class="st">'random'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Same formula as <strong>lme4</strong> but with some extra instructions for the HMC sampler
@@ -752,7 +720,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 
 <h3 id="model-output">Model output</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">summary</span>(fit_interceptonly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">summary</span>(fit_interceptonly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Warning about convergence</li>
@@ -764,12 +732,12 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plot</span>(fit_interceptonly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">plot</span>(fit_interceptonly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Posterior distributions and trace plots for</p>
 <ul>
 <li>the fixed effect intercept (<code>b_Intercept</code>)</li>
-<li>the standard deviation of the random class intercepts (<code>sd_class__Intercept</code>)</li>
+<li>the standard deviation of the random field intercepts (<code>sd_field__Intercept</code>)</li>
 <li>the standard deviation of the model’s residuals (<code>sigma</code>)</li>
 </ul>
 </section>
@@ -782,11 +750,11 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>update()</code> lets us draw more samples without recompiling code</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>fit_interceptonly_moresamples <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_interceptonly, <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">plot</span>(fit_interceptonly_moresamples)</span>
-<span id="cb15-4"><a href="#cb15-4"></a></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="fu">summary</span>(fit_interceptonly_moresamples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>fit_interceptonly_moresamples <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_interceptonly, <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">plot</span>(fit_interceptonly_moresamples)</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">summary</span>(fit_interceptonly_moresamples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="credible-intervals" class="slide level2">
@@ -806,11 +774,11 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <h3 id="calculating-credible-intervals">Calculating credible intervals</h3>
 <p>Median and 90% quantile-based credible interval (QI) of the intercept</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>post_samples <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_interceptonly_moresamples)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>post_samples_intercept <span class="ot">&lt;-</span> post_samples<span class="sc">$</span>b_Intercept</span>
-<span id="cb16-3"><a href="#cb16-3"></a></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">median</span>(post_samples_intercept)</span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">quantile</span>(post_samples_intercept, <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>post_samples <span class="ot">&lt;-</span> <span class="fu">as_draws_df</span>(fit_interceptonly_moresamples)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>post_samples_intercept <span class="ot">&lt;-</span> post_samples<span class="sc">$</span>b_Intercept</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="fu">median</span>(post_samples_intercept)</span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">quantile</span>(post_samples_intercept, <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
 <p><code>as_draws_df()</code> gets all posterior samples for all parameters and puts them into a data frame</p>
@@ -820,18 +788,18 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 
 <ul>
 <li>Literally anything in a Bayesian model has a posterior distribution, so anything can have a credible interval!</li>
-<li>In frequentist models, you have to do bootstrapping to get that kind of interval on most quantitities</li>
+<li>In frequentist models, you have to do bootstrapping to get that kind of interval on most quantities</li>
 </ul>
 </section>
 <section id="variance-decomposition" class="slide level2">
 <h2>Variance decomposition</h2>
 <ul>
 <li>Proportion of variation at different nested levels</li>
-<li>Calculate the ratio of variance within classes to between classes</li>
+<li>Calculate the ratio of variance within fields to between fields</li>
 <li><code>variance_decomposition()</code> from <strong>performance</strong> package also gives us a credible interval on the variance ratio</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">variance_decomposition</span>(fit_interceptonly_moresamples, <span class="at">ci =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">variance_decomposition</span>(fit_interceptonly_moresamples, <span class="at">ci =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -844,27 +812,27 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <section id="mixed-effects-model-with-first-level-predictors" class="slide level2">
 <h2>Mixed-effects model with first-level predictors</h2>
 <ul>
-<li>So far we have only calculated mean of popularity and random variation by class</li>
-<li>But what factors influence popularity of individual students?</li>
-<li>Add first-level predictors (that vary by student) as fixed effects
+<li>So far we have only calculated mean of yield and random variation by field</li>
+<li>But what factors influence yield at the plot level?</li>
+<li>Add first-level predictors (that vary by plot) as fixed effects
 <ul>
-<li>sex</li>
-<li>extraversion</li>
+<li>variety</li>
+<li>soil N</li>
 </ul></li>
 </ul>
 </section>
 <section class="slide level2">
 
 <ul>
-<li>Fixed-effect part of model formula is <code>1 + sex + extrav</code></li>
-<li>No random slope (effect of sex and extraversion on popularity is the same in every class)</li>
+<li>Fixed-effect part of model formula is <code>1 + variety + soilN</code></li>
+<li>No random slope (effect of variety and soil N on yield is the same in each field)</li>
 <li>Still using default priors</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>fit_fixedslopes <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> class),  </span>
-<span id="cb18-2"><a href="#cb18-2"></a>                       <span class="at">data =</span> popular2data, </span>
-<span id="cb18-3"><a href="#cb18-3"></a>                       <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb18-4"><a href="#cb18-4"></a>                       <span class="at">seed =</span> <span class="dv">1400</span>, <span class="at">file =</span> <span class="st">'fit_fixedslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>fit_fixedslopes <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> field),  </span>
+<span id="cb16-2"><a href="#cb16-2"></a>                       <span class="at">data =</span> yield_data, </span>
+<span id="cb16-3"><a href="#cb16-3"></a>                       <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>                       <span class="at">seed =</span> <span class="dv">807</span>, <span class="at">file =</span> <span class="st">'fit_fixedslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
 <p><code>seed</code> sets a random seed for reproducibility, and <code>file</code> creates a <code>.rds</code> file in the working directory so you can reload the model later without rerunning.</p>
@@ -873,7 +841,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">summary</span>(fit_fixedslopes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">summary</span>(fit_fixedslopes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Low Rhat (the model converged)</li>
@@ -887,7 +855,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>prior_summary()</code> shows what priors were used to fit the model</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">prior_summary</span>(fit_fixedslopes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">prior_summary</span>(fit_fixedslopes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>t-distributions on intercept, random effect SD, and residual SD (<code>sigma</code>)</li>
@@ -916,19 +884,19 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li>Use <code>prior()</code> to assign a prior to each class of parameters</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>fit_fixedslopes_priors <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> class),  </span>
-<span id="cb21-2"><a href="#cb21-2"></a>                       <span class="at">data =</span> popular2data, </span>
-<span id="cb21-3"><a href="#cb21-3"></a>                       <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb21-4"><a href="#cb21-4"></a>                         <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
-<span id="cb21-5"><a href="#cb21-5"></a>                       ),</span>
-<span id="cb21-6"><a href="#cb21-6"></a>                       <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb21-7"><a href="#cb21-7"></a>                       <span class="at">seed =</span> <span class="dv">1450</span>, <span class="at">file =</span> <span class="st">'fit_fixedslopes_priors'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>fit_fixedslopes_priors <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> field),</span>
+<span id="cb19-2"><a href="#cb19-2"></a>                              <span class="at">data =</span> yield_data,</span>
+<span id="cb19-3"><a href="#cb19-3"></a>                              <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb19-4"><a href="#cb19-4"></a>                                <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="at">class =</span> b)</span>
+<span id="cb19-5"><a href="#cb19-5"></a>                              ),</span>
+<span id="cb19-6"><a href="#cb19-6"></a>                              <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
+<span id="cb19-7"><a href="#cb19-7"></a>                              <span class="at">seed =</span> <span class="dv">811</span>, <span class="at">file =</span> <span class="st">'fit_fixedslopes_priors'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">summary</span>(fit_fixedslopes_priors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">summary</span>(fit_fixedslopes_priors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Basically no effect on the results or the performance of the HMC sampler</li>
@@ -942,7 +910,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>pp_check()</code> is a useful diagnostic for how well the model fits the data</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">pp_check</span>(fit_fixedslopes_priors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">pp_check</span>(fit_fixedslopes_priors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>black line: density plot of observed data</li>
@@ -960,7 +928,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>gather_draws()</code> makes a data frame from the posterior samples of parameters that we choose</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>posterior_slopes <span class="ot">&lt;-</span> <span class="fu">gather_draws</span>(fit_fixedslopes_priors, b_sex, b_extrav)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>posterior_slopes <span class="ot">&lt;-</span> <span class="fu">gather_draws</span>(fit_fixedslopes_priors, b_varietytall, b_soilN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -969,8 +937,8 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>median_qi()</code> gives us median and quantiles of the parameters</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>posterior_slopes <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">median_qi</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>posterior_slopes <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">median_qi</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -980,34 +948,34 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li>I also include a dotted line at zero for comparison</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">ggplot</span>(posterior_slopes, <span class="fu">aes</span>(<span class="at">y =</span> .variable, <span class="at">x =</span> .value)) <span class="sc">+</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">8</span>, .<span class="dv">95</span>)) <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">ggplot</span>(posterior_slopes, <span class="fu">aes</span>(<span class="at">y =</span> .variable, <span class="at">x =</span> .value)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">8</span>, .<span class="dv">95</span>)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">ggplot</span>(posterior_slopes, <span class="fu">aes</span>(<span class="at">y =</span> .variable, <span class="at">x =</span> .value)) <span class="sc">+</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">stat_interval</span>() <span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> median, <span class="at">geom =</span> <span class="st">'point'</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Blues'</span>) <span class="sc">+</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">ggplot</span>(posterior_slopes, <span class="fu">aes</span>(<span class="at">y =</span> .variable, <span class="at">x =</span> .value)) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">stat_interval</span>() <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> median, <span class="at">geom =</span> <span class="st">'point'</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Blues'</span>) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="model-with-first-level-and-second-level-predictors" class="slide level2 smaller">
 <h2>Model with first-level and second-level predictors</h2>
 <ul>
-<li>Sex and extraversion vary by individual (first-level predictors)</li>
-<li>Teacher experience <code>texp</code> is shared by all individuals in the same classroom (second-level predictor)</li>
+<li>Variety and soil N vary by plot (first-level predictors)</li>
+<li>Rainfall is shared by all plots in the same field (second-level predictor)</li>
 <li>The same syntax is used</li>
-<li>Fixed-effect part is now <code>1 + sex + extrav + texp</code></li>
+<li>Fixed-effect part is now <code>1 + variety + soilN + rainfall</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>fit_fixed12 <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> texp <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> class),  </span>
-<span id="cb28-2"><a href="#cb28-2"></a>                   <span class="at">data =</span> popular2data, </span>
-<span id="cb28-3"><a href="#cb28-3"></a>                   <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb28-4"><a href="#cb28-4"></a>                     <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
-<span id="cb28-5"><a href="#cb28-5"></a>                   ),</span>
-<span id="cb28-6"><a href="#cb28-6"></a>                   <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb28-7"><a href="#cb28-7"></a>                   <span class="at">seed =</span> <span class="dv">703</span>, <span class="at">file =</span> <span class="st">'fit_fixed12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>fit_fixed12 <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">+</span> rainfall <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> field),</span>
+<span id="cb26-2"><a href="#cb26-2"></a>                   <span class="at">data =</span> yield_data,</span>
+<span id="cb26-3"><a href="#cb26-3"></a>                   <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb26-4"><a href="#cb26-4"></a>                     <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
+<span id="cb26-5"><a href="#cb26-5"></a>                   ),</span>
+<span id="cb26-6"><a href="#cb26-6"></a>                   <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
+<span id="cb26-7"><a href="#cb26-7"></a>                   <span class="at">seed =</span> <span class="dv">703</span>, <span class="at">file =</span> <span class="st">'fit_fixed12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -1021,76 +989,77 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <h2>Interactions between fixed effects</h2>
 <ul>
 <li>You can add interaction terms separated by <code>:</code></li>
-<li>example: <code>1 + sex + extrav + texp + sex:extrav + extrav:texp</code></li>
-<li>Interactions can be within level (like <code>sex:extrav</code>) or between levels (like <code>extrav:texp</code>)</li>
+<li>example: <code>1 + variety + soilN + rainfall + variety:soilN + soilN:rainfall</code></li>
+<li>Interactions can be within level (like <code>variety:soilN</code>) or between levels (like <code>soilN:rainfall</code>)</li>
 </ul>
 </section>
 <section id="model-with-random-slopes" class="slide level2 smaller">
 <h2>Model with random slopes</h2>
 <ul>
-<li>So far we’ve assumed any predictor’s effect is the same in every class (only intercept varies, not slope)</li>
+<li>So far we’ve assumed any predictor’s effect is the same in every field (only intercept varies, not slope)</li>
 <li>Add <em>random slope</em> term to allow both intercept and slope to vary</li>
 <li>Specify a random slope by adding the appropriate slope to the design side of the random effect specification
 <ul>
-<li>random intercept only <code>(1 | class)</code></li>
-<li>random intercept and random slope with respect to extraversion <code>(1 + extrav | class)</code></li>
-<li>random intercept and random slope with respect to extraversion and sex <code>(1 + extrav + sex | class)</code></li>
+<li>random intercept only <code>(1 | field)</code></li>
+<li>random intercept and random slope with respect to soil N <code>(1 + soilN | field)</code></li>
+<li>random intercept and random slope with respect to variety and soil N <code>(1 + variety + soilN | field)</code></li>
 </ul></li>
-<li>Doesn’t make sense to have a random slope for <code>texp</code> because all students in the same class have the same <code>texp</code></li>
+<li>Doesn’t make sense to have a random slope for <code>rainfall</code> because all plots in the same field have the same</li>
 </ul>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>fit_randomslopes <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> texp <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> extrav <span class="sc">+</span> sex <span class="sc">|</span> class),  </span>
-<span id="cb29-2"><a href="#cb29-2"></a>                        <span class="at">data =</span> popular2data, </span>
-<span id="cb29-3"><a href="#cb29-3"></a>                        <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb29-4"><a href="#cb29-4"></a>                          <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
-<span id="cb29-5"><a href="#cb29-5"></a>                        ),</span>
-<span id="cb29-6"><a href="#cb29-6"></a>                        <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb29-7"><a href="#cb29-7"></a>                        <span class="at">seed =</span> <span class="dv">709</span>, <span class="at">file =</span> <span class="st">'fit_randomslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>fit_randomslopes <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">+</span> rainfall <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">|</span> field),</span>
+<span id="cb27-2"><a href="#cb27-2"></a>                        <span class="at">data =</span> yield_data,</span>
+<span id="cb27-3"><a href="#cb27-3"></a>                        <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb27-4"><a href="#cb27-4"></a>                          <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
+<span id="cb27-5"><a href="#cb27-5"></a>                        ),</span>
+<span id="cb27-6"><a href="#cb27-6"></a>                        <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">warmup =</span> <span class="dv">3000</span>,</span>
+<span id="cb27-7"><a href="#cb27-7"></a>                        <span class="at">seed =</span> <span class="dv">777</span>, <span class="at">file =</span> <span class="st">'fit_randomslopes'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote>
 <p>Note: this model may take a minute or two to sample</p>
 </blockquote>
 <ul>
 <li>Look at trace plots, <code>pp_check</code>, and model summary</li>
+<li>We see some divergent transitions, maybe because we are fitting a model that is too complicated</li>
 </ul>
 </section>
 <section class="slide level2">
 
 <ul>
-<li>Standard deviation of random slopes for sex is very small</li>
-<li>We can probably omit the random slope for sex from the model</li>
-<li>To confirm, plot class-level slopes for sex (sum of fixed + random) with QI intervals</li>
+<li>Standard deviation of random slopes for variety is very small</li>
+<li>We can probably omit the random slope for variety from the model</li>
+<li>To confirm, plot field-level slopes for variety (sum of fixed + random) with QI intervals</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>sex_slopes <span class="ot">&lt;-</span> <span class="fu">spread_draws</span>(fit_randomslopes, b_sexgirl, r_class[class,variable]) <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">filter</span>(variable <span class="sc">==</span> <span class="st">'sexgirl'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> b_sexgirl <span class="sc">+</span> r_class)</span>
-<span id="cb30-4"><a href="#cb30-4"></a></span>
-<span id="cb30-5"><a href="#cb30-5"></a>sex_slopes <span class="sc">%&gt;%</span> </span>
-<span id="cb30-6"><a href="#cb30-6"></a>  <span class="fu">median_qi</span>(slope, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">90</span>, .<span class="dv">95</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-7"><a href="#cb30-7"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> class, <span class="at">x =</span> slope, <span class="at">xmin =</span> .lower, <span class="at">xmax =</span> .upper)) <span class="sc">+</span></span>
-<span id="cb30-8"><a href="#cb30-8"></a>  <span class="fu">geom_interval</span>() <span class="sc">+</span></span>
-<span id="cb30-9"><a href="#cb30-9"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb30-10"><a href="#cb30-10"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Blues'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>variety_slopes <span class="ot">&lt;-</span> <span class="fu">spread_draws</span>(fit_randomslopes, b_varietytall, r_field[field,variable]) <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">filter</span>(variable <span class="sc">==</span> <span class="st">'varietytall'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">mutate</span>(<span class="at">slope =</span> b_varietytall <span class="sc">+</span> r_field)</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a>variety_slopes <span class="sc">%&gt;%</span> </span>
+<span id="cb28-6"><a href="#cb28-6"></a>  <span class="fu">median_qi</span>(slope, <span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">90</span>, .<span class="dv">95</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> field, <span class="at">x =</span> slope, <span class="at">xmin =</span> .lower, <span class="at">xmax =</span> .upper)) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>  <span class="fu">geom_interval</span>() <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Blues'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <ul>
-<li>The class-level effects of sex are all very similar</li>
-<li>Refit the model without the random slope for sex, only for extraversion</li>
+<li>The field-level effects of variety are all very similar</li>
+<li>Refit the model without the random slope for variety, only for soil N</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>fit_extravrandomslope <span class="ot">&lt;-</span> <span class="fu">brm</span>(popular <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> extrav <span class="sc">+</span> texp <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> extrav <span class="sc">|</span> class),  </span>
-<span id="cb31-2"><a href="#cb31-2"></a>                             <span class="at">data =</span> popular2data, </span>
-<span id="cb31-3"><a href="#cb31-3"></a>                             <span class="at">prior =</span> <span class="fu">c</span>(</span>
-<span id="cb31-4"><a href="#cb31-4"></a>                               <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
-<span id="cb31-5"><a href="#cb31-5"></a>                             ),</span>
-<span id="cb31-6"><a href="#cb31-6"></a>                             <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>,</span>
-<span id="cb31-7"><a href="#cb31-7"></a>                             <span class="at">seed =</span> <span class="dv">206</span>, <span class="at">file =</span> <span class="st">'fit_extravrandomslope'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>fit_soilNrandomslope <span class="ot">&lt;-</span> <span class="fu">brm</span>(yield <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> variety <span class="sc">+</span> soilN <span class="sc">+</span> rainfall <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> soilN <span class="sc">|</span> field),</span>
+<span id="cb29-2"><a href="#cb29-2"></a>                            <span class="at">data =</span> yield_data, </span>
+<span id="cb29-3"><a href="#cb29-3"></a>                            <span class="at">prior =</span> <span class="fu">c</span>(</span>
+<span id="cb29-4"><a href="#cb29-4"></a>                              <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">class =</span> b)</span>
+<span id="cb29-5"><a href="#cb29-5"></a>                            ),</span>
+<span id="cb29-6"><a href="#cb29-6"></a>                            <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">warmup =</span> <span class="dv">3000</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>                            <span class="at">seed =</span> <span class="dv">888</span>, <span class="at">file =</span> <span class="st">'fit_soilNrandomslope'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="comparing-models-with-information-criteria" class="slide level2 smaller">
@@ -1102,17 +1071,17 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li>Then use <code>loo_compare()</code> to rank the models</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>fit_interceptonly_moresamples <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_interceptonly_moresamples, <span class="st">'loo'</span>)</span>
-<span id="cb32-2"><a href="#cb32-2"></a>fit_fixedslopes_priors <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_fixedslopes_priors, <span class="st">'loo'</span>)</span>
-<span id="cb32-3"><a href="#cb32-3"></a>fit_fixed12 <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_fixed12, <span class="st">'loo'</span>)</span>
-<span id="cb32-4"><a href="#cb32-4"></a>fit_randomslopes <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_randomslopes, <span class="st">'loo'</span>)</span>
-<span id="cb32-5"><a href="#cb32-5"></a>fit_extravrandomslope <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_extravrandomslope, <span class="st">'loo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>fit_interceptonly_moresamples <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_interceptonly_moresamples, <span class="st">'loo'</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>fit_fixedslopes_priors <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_fixedslopes_priors, <span class="st">'loo'</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a>fit_fixed12 <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_fixed12, <span class="st">'loo'</span>)</span>
+<span id="cb30-4"><a href="#cb30-4"></a>fit_randomslopes <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_randomslopes, <span class="st">'loo'</span>)</span>
+<span id="cb30-5"><a href="#cb30-5"></a>fit_soilNrandomslope <span class="ot">&lt;-</span> <span class="fu">add_criterion</span>(fit_soilNrandomslope, <span class="st">'loo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">loo_compare</span>(fit_interceptonly_moresamples, fit_fixedslopes_priors, fit_fixed12, fit_randomslopes, fit_extravrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">loo_compare</span>(fit_interceptonly_moresamples, fit_fixedslopes_priors, fit_fixed12, fit_randomslopes, fit_soilNrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Models ranked by ELPD (expected log pointwise predictive density)</li>
@@ -1147,7 +1116,7 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <section class="slide level2">
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">bayesfactor_parameters</span>(fit_extravrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">bayesfactor_parameters</span>(fit_soilNrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>BF &lt; 1 for the intercept</li>
@@ -1168,7 +1137,18 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>conditional_effects()</code> is a quick way to plot all fixed effects with 95% credible intervals</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">conditional_effects</span>(fit_extravrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">conditional_effects</span>(fit_extravrandomslope)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>We can also incorporate random effects into the prediction</li>
+<li>This plot shows the “shrinkage” effect of a mixed model</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">plot</span>(<span class="fu">conditional_effects</span>(fit_soilNrandomslope, <span class="at">effects=</span><span class="st">"soilN:field"</span>, <span class="at">re_formula =</span> <span class="cn">NULL</span>), </span>
+<span id="cb34-2"><a href="#cb34-2"></a>     <span class="at">line_args=</span><span class="fu">list</span>(<span class="at">linewidth=</span><span class="fl">1.2</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>), <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">'none'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -1178,54 +1158,33 @@ times the <strong>ratio of probabilities that A and B are true</strong> (<span c
 <li><code>emmeans()</code> gives you the expected value at specific levels of fixed predictors</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>sex_emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(fit_extravrandomslope, <span class="sc">~</span> sex)</span>
-<span id="cb36-2"><a href="#cb36-2"></a></span>
-<span id="cb36-3"><a href="#cb36-3"></a><span class="fu">gather_emmeans_draws</span>(sex_emmeans) <span class="sc">%&gt;%</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">y =</span> sex)) <span class="sc">+</span></span>
-<span id="cb36-5"><a href="#cb36-5"></a>  <span class="fu">stat_interval</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>)) <span class="sc">+</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> median, <span class="at">geom =</span> <span class="st">'point'</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb36-7"><a href="#cb36-7"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Greens'</span>) <span class="sc">+</span></span>
-<span id="cb36-8"><a href="#cb36-8"></a>  <span class="fu">ggtitle</span>(<span class="st">'posterior expected value by sex'</span>, <span class="st">'averaged across extraversion and teacher experience'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>variety_emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(fit_soilNrandomslope, <span class="sc">~</span> variety)</span>
+<span id="cb35-2"><a href="#cb35-2"></a></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="fu">gather_emmeans_draws</span>(variety_emmeans) <span class="sc">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">y =</span> variety)) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a>  <span class="fu">stat_interval</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>)) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> median, <span class="at">geom =</span> <span class="st">'point'</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Greens'</span>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8"></a>  <span class="fu">ggtitle</span>(<span class="st">'posterior expected value by variety'</span>, <span class="st">'averaged across soil N and rainfall'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <ul>
 <li><code>add_epred_draws()</code> gives you the expected value at levels of categorical and continuous fixed effects</li>
-<li>Trend of popularity versus extraversion for each sex, at average value of <code>texp</code></li>
-<li>Averages across class-level random effects</li>
+<li>Trend of yield versus soil N for each sex, at average value of rainfall</li>
+<li>Averages across field-level random effects</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">expand_grid</span>(<span class="at">texp =</span> <span class="fu">mean</span>(popular2data<span class="sc">$</span>texp),</span>
-<span id="cb37-2"><a href="#cb37-2"></a>            <span class="at">extrav =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> .<span class="dv">5</span>),</span>
-<span id="cb37-3"><a href="#cb37-3"></a>            <span class="at">sex =</span> <span class="fu">c</span>(<span class="st">'boy'</span>, <span class="st">'girl'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-4"><a href="#cb37-4"></a>  <span class="fu">add_epred_draws</span>(fit_extravrandomslope, <span class="at">re_formula =</span> <span class="sc">~</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb37-5"><a href="#cb37-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> extrav, <span class="at">y =</span> .epred, <span class="at">group =</span> sex, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
-<span id="cb37-6"><a href="#cb37-6"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>)) <span class="sc">+</span></span>
-<span id="cb37-7"><a href="#cb37-7"></a>  <span class="fu">scale_fill_grey</span>() <span class="sc">+</span></span>
-<span id="cb37-8"><a href="#cb37-8"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">boy =</span> <span class="st">'blue'</span>, <span class="at">girl =</span> <span class="st">'pink'</span>)) <span class="sc">+</span></span>
-<span id="cb37-9"><a href="#cb37-9"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'posterior expected value of popularity'</span>) <span class="sc">+</span></span>
-<span id="cb37-10"><a href="#cb37-10"></a>  <span class="fu">ggtitle</span>(<span class="st">'posterior expected value by extraversion + sex'</span>, <span class="st">'at average value of teacher experience'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section class="slide level2">
-
-<ul>
-<li>We can include the class-level random effects as well if we want</li>
-<li>This plot only shows 10 of the 100 classes</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">expand_grid</span>(<span class="at">texp =</span> <span class="fu">mean</span>(popular2data<span class="sc">$</span>texp),</span>
-<span id="cb38-2"><a href="#cb38-2"></a>            <span class="at">extrav =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> .<span class="dv">5</span>),</span>
-<span id="cb38-3"><a href="#cb38-3"></a>            <span class="at">sex =</span> <span class="fu">c</span>(<span class="st">'boy'</span>, <span class="st">'girl'</span>),</span>
-<span id="cb38-4"><a href="#cb38-4"></a>            <span class="at">class =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-5"><a href="#cb38-5"></a>  <span class="fu">add_epred_draws</span>(fit_extravrandomslope, <span class="at">re_formula =</span> <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">+</span> extrav<span class="sc">|</span>class)) <span class="sc">%&gt;%</span></span>
-<span id="cb38-6"><a href="#cb38-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> extrav, <span class="at">y =</span> .epred, <span class="at">group =</span> class, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
-<span id="cb38-7"><a href="#cb38-7"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sex) <span class="sc">+</span></span>
-<span id="cb38-8"><a href="#cb38-8"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">95</span>), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb38-9"><a href="#cb38-9"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">boy =</span> <span class="st">'blue'</span>, <span class="at">girl =</span> <span class="st">'pink'</span>)) <span class="sc">+</span></span>
-<span id="cb38-10"><a href="#cb38-10"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'posterior expected value of popularity'</span>) <span class="sc">+</span></span>
-<span id="cb38-11"><a href="#cb38-11"></a>  <span class="fu">ggtitle</span>(<span class="st">'class-level predictions of popularity vs. extraversion by sex'</span>, <span class="st">'at average value of teacher experience'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">expand_grid</span>(<span class="at">rainfall =</span> <span class="fu">mean</span>(yield_data<span class="sc">$</span>rainfall),</span>
+<span id="cb36-2"><a href="#cb36-2"></a>            <span class="at">soilN =</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">9</span>, <span class="at">by =</span> .<span class="dv">5</span>),</span>
+<span id="cb36-3"><a href="#cb36-3"></a>            <span class="at">variety =</span> <span class="fu">c</span>(<span class="st">'short'</span>, <span class="st">'tall'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a>  <span class="fu">add_epred_draws</span>(fit_soilNrandomslope, <span class="at">re_formula =</span> <span class="sc">~</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-5"><a href="#cb36-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> soilN, <span class="at">y =</span> .epred, <span class="at">group =</span> variety, <span class="at">color =</span> variety)) <span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">.width =</span> <span class="fu">c</span>(.<span class="dv">66</span>, .<span class="dv">95</span>, .<span class="dv">99</span>)) <span class="sc">+</span></span>
+<span id="cb36-7"><a href="#cb36-7"></a>  <span class="fu">scale_fill_grey</span>() <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'posterior expected value of yield'</span>) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9"></a>  <span class="fu">ggtitle</span>(<span class="st">'posterior expected value by soil N + variety'</span>, <span class="st">'at average value of rainfall'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusion" class="slide level2">

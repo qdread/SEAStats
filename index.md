@@ -68,13 +68,14 @@ Full-text version                                                         | Slid
 ### Data visualization basics with R and ggplot2
 
 One-hour session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/).  
-*Taught in Fayetteville, AR, January 10, 2023.*
+*Taught in Fayetteville, AR, January 10, 2023 (updated February 02, 2023)*
 
 - [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'data_viz_basics/data_viz_basics_worksheet.R' | relative_url }}){:target="_blank"}
 
-- [GitHub repository with source code of course materials](https://github.com/qdread/data-viz-basics){:target="_blank"}
+- [GitHub repository with source code of course materials](https://github.com/qdread/brms-crash-course){:target="_blank"}
+- [Source code for version taught in Fayetteville, January 10, 2023](https://github.com/qdread/brms-crash-course/releases/tag/v0.1){:target="_blank"}
 
 -----
 
