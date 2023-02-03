@@ -1,6 +1,6 @@
 # Getting Bayesian model software to work in R
 
-My preferred setup for Bayesian models in R is to use the [brms][brms] modeling package. [brms][brms] is a R interface that allows you to write multilevel models with simple code that has similar syntax to the common mixed-model package [lme4][lme4]. "Behind the scenes" it fits a Bayesian model with the software [Stan][Stan] that has a state-of-the-art algorithm coded in C++ for quickly and efficiently sampling posterior distributions. There are two different packages that integrate between Stan and R, and you can specify which one to use in **brms**. While the default is [rstan][rstan], the best option which makes the models run the fastest is [CmdStanR][cmdstanr]. So in order to get **brms** working in R, you need to not only install **brms** but also install Stan and [CmdStanR][cmdstanr] on your system. Then you have to set up everything so that all those pieces of software can communicate with each other.
+My preferred setup for Bayesian models in R is to use the [brms][brms] modeling package. [brms][brms] is a R interface that allows you to write multilevel models with simple code that has similar syntax to the common mixed-model package [lme4][lme4]. "Behind the scenes" it fits a Bayesian model with the software [Stan][stan] that has a state-of-the-art algorithm coded in C++ for quickly and efficiently sampling posterior distributions. There are two different packages that integrate between Stan and R, and you can specify which one to use in **brms**. While the default is [rstan][rstan], the best option which makes the models run the fastest is [CmdStanR][cmdstanr]. So in order to get **brms** working in R, you need to not only install **brms** but also install Stan and [CmdStanR][cmdstanr] on your system. Then you have to set up everything so that all those pieces of software can communicate with each other.
 
 I want to give props to Paul B&uuml;rkner, the developer of `brms`, and all the developers of `Stan` including Andrew Gelman, Bob Carpenter, and lots of other hard-working people. Their hard work makes our life easier and our stats better!
 
@@ -44,3 +44,9 @@ Then I prefer to set the following options:
 `options(mc.cores = 4, brms.backend = 'cmdstanr', brms.file_refit = 'on_change')`
 
 This tells `brms` to run four chains in parallel (set this to a smaller number if your machine will blow up if you try to run 4 cores in parallel), ensures that `cmdstanr` is being used to fit the models, and also allows you to load pre-fit models from a file if you call the same model again which will save you time!
+
+[brms]: https://paul-buerkner.github.io/brms/
+[stan]: https://mc-stan.org/
+[lme4]: https://cran.r-project.org/package=lme4
+[rstan]: https://mc-stan.org/users/interfaces/rstan
+[cmdstanr]: https://mc-stan.org/cmdstanr/
