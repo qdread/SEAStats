@@ -21,21 +21,21 @@ github:
   
 navigation:
   - name: SEAStats Home
-    link: /
+    link: /SEAStats
   - name: R Boot Camp
-    link: /#rbootcamp
+    link: /SEAStats/#rbootcamp
   - name: Mixed Models in R
-    link: /#mixedmodelsinr
+    link: /SEAStats/#mixedmodelsinr
   - name: ggplot2 Basics
-    link: /#ggplot2basics
+    link: /SEAStats/#ggplot2basics
   - name: Bayesian Mixed Models with brms
-    link: /#bayesianmixedmodels
+    link: /SEAStats/#bayesianmixedmodels
   - name: R for SAS Users
-    link: /#rforsas
+    link: /SEAStats/#rforsas
   - name: Other learning resources
-    link: /#other-learning-resources
+    link: /SEAStats/#other-learning-resources
   - name: Archived course pages
-    link: /#archived-course-and-workshop-pages
+    link: /SEAStats/#archived-course-and-workshop-pages
 
     
     
