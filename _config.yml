@@ -20,20 +20,22 @@ github:
   repo:              https://github.com/qdread/SEAStats
   
 navigation:
+  - name: SEAStats Home
+    link: /
   - name: R Boot Camp
-    link: ./#rbootcamp
+    link: /#rbootcamp
   - name: Mixed Models in R
-    link: ./#mixedmodelsinr
+    link: /#mixedmodelsinr
   - name: ggplot2 Basics
-    link: ./#ggplot2basics
+    link: /#ggplot2basics
   - name: Bayesian Mixed Models with brms
-    link: ./#bayesianmixedmodels
+    link: /#bayesianmixedmodels
   - name: R for SAS Users
-    link: ./#rforsas
+    link: /#rforsas
   - name: Other learning resources
-    link: ./#other-learning-resources
+    link: /#other-learning-resources
   - name: Archived course pages
-    link: ./#archived-course-and-workshop-pages
+    link: /#archived-course-and-workshop-pages
 
     
     

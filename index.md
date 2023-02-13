@@ -67,8 +67,8 @@ Full-text version                                                         | Slid
 
 ### Data visualization basics with R and ggplot2
 
-One-hour session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/).  
-*Taught in Fayetteville, AR, January 10, 2023*
+90-minute session introducing students to visualizing data with R and [ggplot2](https://ggplot2.tidyverse.org/).  
+*Taught in Fayetteville, AR, January 10, 2023; Athens, GA, February 8, 2023*
 
 - [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }}){:target="_blank"}
@@ -84,7 +84,7 @@ One-hour session introducing students to visualizing data with R and [ggplot2](h
 ### A crash course in Bayesian mixed models with brms
 
 Two-hour session introducing students to Bayesian inference, and showing how to fit some simple Bayesian mixed models with [brms](https://paul-buerkner.github.io/brms/).  
-*Taught in Fayetteville, AR, January 10, 2023 (updated February 02, 2023).*
+*Taught in Fayetteville, AR, January 10, 2023 (older version); Athens, GA, February 9, 2023 (updated version)*
 
 - [Instructions for installing and configuring brms]({{ 'brms_crash_course/simple_brms_install_instructions' | relative_url }}) (do this before starting the course)
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }}){:target="_blank"}
@@ -102,7 +102,7 @@ Two-hour session introducing students to Bayesian inference, and showing how to 
 ### R for SAS Users
 
 Two-hour session showing basic data processing and model fitting procedures in R and SAS side-by-side.  
-*Will be taught in Athens, GA, February 2023.*
+*Taught in Athens, GA, February 7, 2023.*
 
 - [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }}){:target="_blank"}
@@ -123,4 +123,4 @@ I compiled a [list of my favorite learning resources](https://qdread.github.io/g
 
 - [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-02-02. This page's contents were created by the author and do not reflect official USDA policy.*
+*This page last updated by QDR on 2023-02-13. This page's contents were created by the author and do not reflect official USDA policy.*
