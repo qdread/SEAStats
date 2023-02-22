@@ -22,6 +22,8 @@ github:
 navigation:
   - name: SEAStats Home
     link: /SEAStats
+  - name: Frequently Asked Questions
+    link: /SEAStats/faq
   - name: R Boot Camp
     link: /SEAStats/#rbootcamp
   - name: Mixed Models in R

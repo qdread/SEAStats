@@ -7,6 +7,19 @@ On this page, I answer FAQs that many scientists have asked me. If you have a qu
 
 *This document is a work in progress! Last edited 2023-02-22.*
 
+- [How can I ask you for help?](#how-can-i-ask-you-for-help)
+- [What information should I provide in a help request?](#what-information-should-i-provide-in-a-help-request)
+- [What kinds of statistical analyses can you help with?](#what-kinds-of-statistical-analyses-can-you-help-with)
+- [What does the help you provide look like?](#what-does-the-help-you-provide-look-like)
+- [Do you have any favorite methods or approaches?](#do-you-have-any-favorite-methods-or-approaches)
+- [What statistical programming languages do you use?](#what-statistical-programming-languages-do-you-use)
+- [Can you help me with SciNet?](#can-you-help-me-with-scinet)
+- [How fast can you get something back to me?](#how-fast-can-you-get-something-back-to-me)
+- [How do I give you credit for assisting with my analysis?](#how-do-i-give-you-credit-for-assisting-with-my-analysis)
+- [Can you help me make my science open and reproducible?](#can-you-help-me-make-my-science-open-and-reproducible)
+- [What about reviewing my five-year project plan?](#what-about-reviewing-my-five-year-project-plan)
+- [How can I learn to do my own stats?](#myownstats)
+
 ## How can I ask you for help?
 
 Please contact me by email (quentin dot read at usda dot gov) or Microsoft Teams message. I will do my best to get back to you as soon as possible!
@@ -27,7 +40,7 @@ With all of that said, don't worry too much about providing every single possibl
 - **Machine learning**: Again, I am not an expert but I am constantly trying to learn new machine learning techniques. I can help you with models like random forest and other multivariate clustering techniques.
 - **And more ...**: Feel free to ask me about any kind of model or analysis. If I can't help you I will try my best to find people or resources that can give you the help you need.
 
-## What does the help you provide "look like"?
+## What does the help you provide look like?
 
 It ranges the whole gamut from a quick email or 10-minute conversation, to a collaboration that can last for months or years. I can answer questions you have, help point you toward resources that can help you learn about the stats or models you need, or review code or text you've written to make sure it's correct. If needed, I can do some analysis for you, or even take the lead on the entire data manipulation, analysis, and presentation workflow. It really depends on your needs. Every project is different! But no matter what, it is a "co-creation" process where we will work together to use your data to tell the story you want to tell.
 
@@ -69,6 +82,7 @@ I am officially responsible for reviewing all 5-year CRIS project plans for the 
 
 Incidentally, it isn't necessary to list me as a collaborator on your preplan as I am always available to provide statistical support to SEA scientists whether or not my name appears on your plan.
 
+<div id="myownstats"></div>
 ## Quentin, it's great that you're there to help, but I see there is only one of you for hundreds of scientists. How can I learn to do my own stats?
 
 Learning stats is a journey and a process. You can't learn it overnight. However, I would recommend starting at my [SEAStats training page](/SEAStats) for a gentle introduction to both the statistical models and the tools in R you will need to work with them. On that page I also have links to other helpful tutorials and learning resources. Also, check out the [free online training page on SciNet](https://scinet.usda.gov/training/free-online-training) that my area statistician colleagues Sara and Kathy put together with tons of resources!
