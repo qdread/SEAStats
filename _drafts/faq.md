@@ -29,11 +29,15 @@ With all of that said, don't worry too much about providing every single possibl
 
 ## What does the help you provide "look like"?
 
-It ranges the whole gamut from a quick email or 10-minute conversation, to a collaboration that can last for months or years. I can answer questions you have, help point you toward resources that can help you learn about the stats or models you need, or review code or text you've written to make sure it's correct. If needed, I can do some analysis for you, or even take the lead on the entire data manipulation, analysis, and presentation workflow. It really depends on your needs. Every project is different!
+It ranges the whole gamut from a quick email or 10-minute conversation, to a collaboration that can last for months or years. I can answer questions you have, help point you toward resources that can help you learn about the stats or models you need, or review code or text you've written to make sure it's correct. If needed, I can do some analysis for you, or even take the lead on the entire data manipulation, analysis, and presentation workflow. It really depends on your needs. Every project is different! But no matter what, it is a "co-creation" process where we will work together to use your data to tell the story you want to tell.
 
 ## Do you have any favorite methods or approaches?
 
-- Bayesian models
+I am a big proponent of Bayesian methods. They are more flexible and allow us to fit models that classical statistical approaches just can't handle. Also, philosophically it's a better way to approach science: classical statistics tries to reject or not reject a null hypothesis, which gives the false impression that the world is black and white and there are "yes or no" answers to our hypotheses about the world. Bayesian statistics is more about estimating the size of the effects and being honest about the level of uncertainty we have for any claim we make about the world. Of course, I know many people haven't been trained in that approach, so I am happy to work with you to learn more about it. Even if you don't become a Bayesian, it's important to at least be familiar with the terminology and the ideas behind it because you will start to see it more and more in the literature as time goes on.
+
+Whether we're working with Bayesian or classical models, I really like GLMMs (generalized linear mixed models). They are a very flexible kind of model that allow us to work with data with all kinds of non-independence in space and time, and all kinds of distributions. 
+
+Bayesian stats and GLMMs are best for "small data" or medium-sized data. When it comes to big data, we have to move to machine learning approaches. As I said above, I am not an expert in those but I am excited to learn with you!
 
 ## What statistical programming languages do you use?
 
@@ -53,16 +57,11 @@ Of course, I am willing to make exceptions if there is a rush deadline. The soon
 
 ## How do I give you credit for assisting with my analysis?
 
-I do not have a formal publication quota, but I am informally evaluated in part based on the publications and presentations I co-author. Of course, my contribution will vary a lot from project to project. Please consider adding me as a co-author on any project where I've made a meaningful contribution to the analysis, presentation, and/or writing. If I am a co-author, I promise to hold up my end of the bargain and write any sections for which I am responsible as well as review other parts of the manuscript, including text, figures, and tables. But if my contribution to your project is just a quick consultation or question-and-answer session, co-authorship is not necessary. An informal acknowledgment would be great! 
+I do not have a formal publication quota, but I am informally evaluated in part based on the publications and presentations I co-author. Of course, my contribution will vary a lot from project to project. Please consider adding me as a co-author on any paper or other product where I've made a meaningful contribution to the analysis, presentation, and/or writing. If I am a co-author, I promise to hold up my end of the bargain and write any sections for which I am responsible as well as review other parts of the manuscript, including text, figures, and tables. But if my contribution to your project is just a quick consultation or question-and-answer session, co-authorship is not necessary. An informal acknowledgment would be great! 
 
 ## Can you help me make my science open and reproducible?
 
-Yes!
-
-- github
-- ag data commons
-
-MOAR WORDS HERE
+Yes! I am passionate about promoting open and reproducible science in ARS. It's especially important now that the White House has mandated we make all our data publicly available. That should also include the code that turns raw data into a final product with the results of an analysis. I encourage the use of GitHub. I will help you create a private GitHub repository where we can share code and collaborate on our project. When it is time to publish the manuscript, I will help you archive the code from the repository as well as the raw data on [Ag Data Commons](data.nal.usda.gov), the USDA's own data repository. This will ensure that the code and data we produce at USDA provide the biggest possible benefit to society. Soon, it will be a requirement to file a 115 for Ag Data Commons entries; this will help us get credit for the additional work that it takes to make our science open and reproducible.
 
 ## What about reviewing my five-year project plan?
 
@@ -72,4 +71,4 @@ Incidentally, it isn't necessary to list me as a collaborator on your preplan as
 
 ## Quentin, it's great that you're there to help, but I see there is only one of you for hundreds of scientists. How can I learn to do my own stats?
 
-Learning stats is a journey and a process. You can't learn it overnight. However, I would recommend starting at my SEAStats training page for a gentle introduction to both the statistical models and the tools in R you will need to work with them. On that page I also have links to other helpful tutorials and learning resources. Also, check out the page on SciNet that my area statistician colleagues Sara and Kathy put together with tons of resources!
+Learning stats is a journey and a process. You can't learn it overnight. However, I would recommend starting at my [SEAStats training page](/SEAStats) for a gentle introduction to both the statistical models and the tools in R you will need to work with them. On that page I also have links to other helpful tutorials and learning resources. Also, check out the [free online training page on SciNet](https://scinet.usda.gov/training/free-online-training) that my area statistician colleagues Sara and Kathy put together with tons of resources!

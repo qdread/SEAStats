@@ -10,6 +10,8 @@ redirect_from:
 
 This page hosts learning materials for USDA ARS SEA statistics and data science trainings created by SEA area statistician [Quentin Read](https://quentinread.com). 
 
+For scientists interested in contacting me for a consultation, please check out the [frequently asked questions page]({{ 'faq' | relative_url }}){:target="_blank"}!
+
 **For USDA personnel only**: to access video recordings of previous training sessions, please visit the [SEA Statistics Training page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) on USDA Axon intranet.
 
 ### R Installation instructions
