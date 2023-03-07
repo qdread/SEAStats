@@ -10,7 +10,7 @@ redirect_from:
 
 This page hosts learning materials for USDA ARS SEA statistics and data science trainings created by SEA area statistician [Quentin Read](https://quentinread.com). 
 
-For scientists interested in contacting me for a consultation, please check out the [frequently asked questions page]({{ 'faq' | relative_url }}){:target="_blank"}!
+For scientists interested in contacting me for a consultation, please check out the [frequently asked questions page]({{ 'faq' | relative_url }})!
 
 **For USDA personnel only**: to access video recordings of previous training sessions, please visit the [SEA Statistics Training page](https://axon.ars.usda.gov/SEA/Pages/SEA-Statistics-Workshop.aspx) on USDA Axon intranet.
 
@@ -75,6 +75,7 @@ Full-text version                                                         | Slid
 - [Text version of lesson]({{ 'data_viz_basics/data_viz_basics' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'data_viz_basics/data_viz_basics_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'data_viz_basics/data_viz_basics_worksheet.R' | relative_url }}){:target="_blank"}
+- [Answers to exercises]({{ 'data_viz_basics/data_viz_basics_answers' | relative_url }}){:target="_blank"}
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/data-viz-basics){:target="_blank"}
 
