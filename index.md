@@ -110,7 +110,7 @@ Two-hour session showing basic data processing and model fitting procedures in R
 - [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.R' | relative_url }}){:target="_blank"}
-- [Answers to exercises]({{ 'data_viz_basics/R_for_SAS_users_answers' | relative_url }}){:target="_blank"}
+- [Answers to exercises]({{ 'R_for_SAS_users/R_for_SAS_users_answers' | relative_url }}){:target="_blank"}
 - [.sas file with all SAS code from the lesson]({{ 'R_for_SAS_users/R_for_SAS_users.sas' | relative_url }}){:target="_blank"}
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users){:target="_blank"}
