@@ -110,6 +110,7 @@ Two-hour session showing basic data processing and model fitting procedures in R
 - [Text version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'R_for_SAS_users/R_for_SAS_users_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'R_for_SAS_users/R_for_SAS_users_worksheet.R' | relative_url }}){:target="_blank"}
+- [Answers to exercises]({{ 'data_viz_basics/R_for_SAS_users_answers' | relative_url }}){:target="_blank"}
 - [.sas file with all SAS code from the lesson]({{ 'R_for_SAS_users/R_for_SAS_users.sas' | relative_url }}){:target="_blank"}
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/R-for-SAS-users){:target="_blank"}
@@ -126,4 +127,4 @@ I compiled a [list of my favorite learning resources](https://qdread.github.io/g
 
 - [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-02-13. This page's contents were created by the author and do not reflect official USDA policy.*
+*This page last updated by QDR on 2023-03-08. This page's contents were created by the author and do not reflect official USDA policy.*
