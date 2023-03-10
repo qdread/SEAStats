@@ -93,6 +93,7 @@ Two-hour session introducing students to Bayesian inference, and showing how to 
 - [Text version of lesson]({{ 'brms_crash_course/brms_crash_course' | relative_url }}){:target="_blank"}
 - [Slides version of lesson]({{ 'brms_crash_course/brms_crash_course_slides' | relative_url }}){:target="_blank"}
 - [Worksheet (.R script)]({{ 'brms_crash_course/brms_crash_course_worksheet.R' | relative_url }}){:target="_blank"}
+- [Answers to exercises]({{ 'brms_crash_course/brms_crash_course_answers' | relative_url }}){:target="_blank"}
 
 - [GitHub repository with source code of course materials](https://github.com/qdread/brms-crash-course){:target="_blank"}
 - [Source code for version taught in Fayetteville, January 10, 2023](https://github.com/qdread/brms-crash-course/releases/tag/v0.1){:target="_blank"}
@@ -127,4 +128,4 @@ I compiled a [list of my favorite learning resources](https://qdread.github.io/g
 
 - [Course homepage from two-day workshop including "R Boot Camp" and "A Practical Toolkit for Mixed Models in R"](https://quentinread.com/glmm-workshop-dec2022){:target="_blank"} including links to text version of lesson, slides, worksheets, and example datasets
 
-*This page last updated by QDR on 2023-03-08. This page's contents were created by the author and do not reflect official USDA policy.*
+*This page last updated by QDR on 2023-03-10. This page's contents were created by the author and do not reflect official USDA policy.*
